@@ -1,0 +1,26 @@
+---
+name: build-ios-sim
+
+env:
+  NODE_VERSION: 20.13.1
+  TERM: xterm
+
+jobs:
+  build-ios-simulator:
+    runs-on: macos-13
+    steps:
+      - name: ci/checkout-repo
+        uses: actions/checkout@v4
+
+      - name: ci/prepare-ios-build
+        uses: ./.github/actions/prepare-ios-build
+
+      - name: ci/build-ios-simulator
+        run: bundle exec fastlane ios simulator --env ios.simulator
+        working-directory: ./fastlane
+
+      - name: ci/upload-ios-pr-simulator
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-simulator-${{ github.run_id }}
+          path: Mattermost-simulator-x86_64.app.zip
