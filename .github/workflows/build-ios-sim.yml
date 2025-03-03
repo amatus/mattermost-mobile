@@ -1,6 +1,8 @@
 ---
 name: build-ios-sim
 
+on: workflow-dispatch
+
 env:
   NODE_VERSION: 20.13.1
   TERM: xterm
